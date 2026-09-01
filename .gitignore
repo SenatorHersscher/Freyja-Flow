@@ -1,0 +1,17 @@
+# Binaries / Executables (Opsiyonel: Release için tutmak istemezseniz)
+# bin/
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS Temporary Files
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+
+# Local Test Logs
+*.log

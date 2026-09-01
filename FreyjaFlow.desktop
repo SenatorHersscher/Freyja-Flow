@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Freyja Flow
+Comment=Android Device & Ecosystem Bridge for Freyja OS
+Exec="/home/senator/Documents/VsCodes/Frejya Flow/bin/freyja-flow-linux-x64" --open
+Icon=freyja-flow
+Terminal=false
+Type=Application
+Categories=Utility;System;RemoteAccess;
+StartupNotify=true

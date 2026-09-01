@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freyja Flow | Cihaz & Ekosistem Köprüsü</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Lucide Icons CDN with Fallback -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <!-- AURORA GPU AMBİYANS IŞIKLARI (YTMusic ile aynı estetik) -->
+    <div class="aurora-ambient">
+        <div class="aurora-glow purple-deep"></div>
+        <div class="aurora-glow fuchsia-soft"></div>
+        <div class="aurora-glow blue-nebula"></div>
+    </div>
+
+    <div class="app-wrapper">
+
+        <!-- ÜST BAŞLIK & KONTROL ÇUBUĞU -->
+        <header class="header-bar">
+            <div class="brand-section">
+                <img id="brand-logo" src="assets/freyja_logo_dark.svg" alt="Freyja OS" class="brand-logo">
+                <div class="brand-titles">
+                    <h1>Freyja Flow <span class="brand-badge">Ecosystem</span></h1>
+                    <p>Android Köprüsü & Cihaz Deneyimi</p>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <div id="connection-status-pill" class="status-pill">
+                    <span class="status-dot"></span>
+                    <span id="connection-status-text">Cihaz Bekleniyor...</span>
+                </div>
+
+                <button id="theme-toggle-btn" class="icon-btn" title="Temayı Değiştir">
+                    <i data-lucide="sun" id="theme-icon"></i>
+                </button>
+
+                <button id="refresh-devices-btn" class="icon-btn" title="Cihazları Yeniden Tara">
+                    <i data-lucide="refresh-cw"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- ANA DASHBOARD IZGARASI -->
+        <main class="dashboard-grid">
+
+            <!-- SOL PANEL: BAĞLANTI & QR KOD MERKEZİ -->
+            <section class="glass-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <i data-lucide="qr-code"></i>
+                        <span>Hızlı Eşleşme (Wi-Fi / USB)</span>
+                    </div>
+                </div>
+
+                <div class="qr-container">
+                    <div class="qr-box" id="qrcode-target">
+                        <!-- QR Kod JavaScript ile buraya çizilir -->
+                    </div>
+                    <div class="pairing-details">
+                        <span class="pairing-ip" id="server-address-display">http://localhost:8080</span>
+                        <span class="pairing-subtext">Telefon kamerasından okutun veya aynı ağa bağlanın</span>
+                    </div>
+                </div>
+
+                <div class="manual-connect-box">
+                    <label class="stat-label"><span>Kablosuz ADB Bağlantısı</span><span>Port 5555</span></label>
+                    <div class="input-row">
+                        <input type="text" id="manual-ip-input" class="input-field" placeholder="192.168.1.xxx:5555">
+                        <button id="connect-ip-btn" class="btn-primary">
+                            <i data-lucide="link"></i>
+                            <span>Bağlan</span>
+                        </button>
+                    </div>
+                    <button id="scan-usb-btn" class="btn-secondary" style="margin-top: 6px;">
+                        <i data-lucide="cable"></i>
+                        <span>USB Cihazları Otomatik Tanı</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- SAĞ PANEL: CANLI CİHAZ KARTI & EKRAN KONTROLLERİ -->
+            <section class="glass-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <i data-lucide="smartphone"></i>
+                        <span>Bağlı Cihaz Durumu</span>
+                    </div>
+                    <span id="device-model-badge" class="tag-badge usb">LineageOS 21</span>
+                </div>
+
+                <!-- CİHAZ GENEL BAKIŞ KARTI -->
+                <div class="device-hero-card">
+                    <div class="device-main-info">
+                        <div class="device-avatar">
+                            <i data-lucide="tablet" id="device-type-icon"></i>
+                        </div>
+                        <div class="device-meta">
+                            <h3 id="device-name">Galaxy Tab S6 Lite</h3>
+                            <p id="device-serial">SM-P610 (R52R506C9RX)</p>
+                            <div class="device-badges">
+                                <span id="transport-badge" class="tag-badge usb"><i data-lucide="zap"></i> USB 3.0</span>
+                                <span id="android-version-badge" class="tag-badge wifi">Android 14</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="device-stats">
+                        <div class="stat-row">
+                            <div class="stat-label">
+                                <span>Batarya Seviyesi</span>
+                                <span id="battery-pct-text">⚡ %85 (Şarjda)</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div id="battery-progress-bar" class="progress-bar-fill battery" style="width: 85%;"></div>
+                            </div>
+                        </div>
+
+                        <div class="stat-row">
+                            <div class="stat-label">
+                                <span>Dahili Hafıza</span>
+                                <span id="storage-text-display">18.4 GB / 64 GB</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div id="storage-progress-bar" class="progress-bar-fill storage" style="width: 45%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EKRAN YANSITMA VE AKSİYON DECK'İ -->
+                <div class="panel-header" style="margin-top: 6px;">
+                    <div class="panel-title">
+                        <i data-lucide="monitor-play"></i>
+                        <span>Yansıtma & Kontrol Motoru (Scrcpy 4.0)</span>
+                    </div>
+                </div>
+
+                <div class="action-deck-grid">
+                    <div class="deck-card" id="btn-mirror-normal" title="Tam ekran yansıtma ve klavye/fare kontrolü">
+                        <div class="deck-icon-wrap"><i data-lucide="play"></i></div>
+                        <h4>Ekranı Yansıt</h4>
+                        <p>60 FPS düşük gecikmeli görüntü ve imleç kontrolü</p>
+                    </div>
+
+                    <div class="deck-card" id="btn-mirror-screenoff" title="Telefonun fiziksel ekranı kapalıyken yönet">
+                        <div class="deck-icon-wrap"><i data-lucide="moon"></i></div>
+                        <h4>Gizli Mod (Screen Off)</h4>
+                        <p>Telefon ekranı kararır, sadece PC'de görünür</p>
+                    </div>
+
+                    <div class="deck-card" id="btn-mirror-audio" title="Telefon sesini PC hoparlörlerine aktar">
+                        <div class="deck-icon-wrap"><i data-lucide="headphones"></i></div>
+                        <h4>Ses Köprüsü</h4>
+                        <p>Telefon sesini sıfır kayıpla PC'ye bağla</p>
+                    </div>
+
+                    <div class="deck-card" id="btn-mirror-cam" title="Telefonu 4K WebCam yap">
+                        <div class="deck-icon-wrap"><i data-lucide="camera"></i></div>
+                        <h4>Studio Cam</h4>
+                        <p>Kamerayı sanal webcam (V4L2) olarak kullan</p>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+        <!-- ALT BÖLÜM: SÜRÜKLE BIRAK DROPZONE & PANO SENKRONİZASYONU -->
+        <div class="dashboard-grid">
+
+            <!-- DROPZONE DOSYA RAFI -->
+            <section class="glass-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <i data-lucide="folder-up"></i>
+                        <span>Freyja Dropzone (Dosya Gönder)</span>
+                    </div>
+                    <div class="target-folder-picker">
+                        <span>Hedef:</span>
+                        <select id="target-folder-select">
+                            <option value="/sdcard/Download/">İndirilenler (/Download)</option>
+                            <option value="/sdcard/Music/">Müzik (/Music)</option>
+                            <option value="/sdcard/DCIM/">Kamera & Foto (/DCIM)</option>
+                            <option value="/sdcard/Documents/">Belgeler (/Documents)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="dropzone-area" id="file-dropzone">
+                    <input type="file" id="file-input-hidden" multiple style="display: none;">
+                    <div class="dropzone-icon">
+                        <i data-lucide="cloud-upload"></i>
+                    </div>
+                    <div class="dropzone-text">
+                        <h4>Masaüstünden Dosyaları Buraya Sürükleyin</h4>
+                        <p>Fotoğraf, video, müzik veya APK dosyalarını anında telefona aktarır</p>
+                    </div>
+                    <button class="btn-secondary" id="browse-files-btn" style="margin-top: 4px;">
+                        <i data-lucide="folder-search"></i>
+                        <span>Dosya Seç</span>
+                    </button>
+                </div>
+
+                <div id="transfer-progress-box" style="display: none; flex-direction: column; gap: 6px;">
+                    <div class="stat-label">
+                        <span id="transfer-filename">dosya.mp4</span>
+                        <span id="transfer-pct">0%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div id="transfer-fill" class="progress-bar-fill battery" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PANO (CLIPBOARD) & FREYJA DECK -->
+            <section class="glass-panel">
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <i data-lucide="clipboard-copy"></i>
+                        <span>Evrensel Pano & Freyja Deck</span>
+                    </div>
+                    <button class="btn-secondary" id="sync-clipboard-btn" style="padding: 4px 12px; font-size: 0.75rem;">
+                        <i data-lucide="refresh-ccw"></i>
+                        <span>Eşitle</span>
+                    </button>
+                </div>
+
+                <div class="clipboard-hub">
+                    <div class="clip-box">
+                        <div class="clip-header">
+                            <span>Son Pano Metni</span>
+                            <i data-lucide="copy" id="copy-clipboard-btn" style="cursor: pointer; width: 14px;"></i>
+                        </div>
+                        <div class="clip-content" id="clipboard-content-display">
+                            Pano henüz boş veya senkronize bekleniyor...
+                        </div>
+                    </div>
+
+                    <div class="otp-pill">
+                        <div class="otp-info">
+                            <span style="font-size: 0.75rem; font-weight: 700; color: var(--text-sub);">Son Gelen 2FA / OTP Kodu</span>
+                            <span class="otp-code" id="otp-code-display">482 910</span>
+                        </div>
+                        <button class="btn-primary" id="copy-otp-btn" style="padding: 8px 14px; font-size: 0.78rem;">
+                            <span>Kopyala</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- FREYJA QUICK SHORTCUTS DECK -->
+                <div class="deck-bar">
+                    <button class="deck-pill-btn" id="deck-home" title="Ana Ekran"><i data-lucide="home"></i> Home</button>
+                    <button class="deck-pill-btn" id="deck-back" title="Geri"><i data-lucide="chevron-left"></i> Geri</button>
+                    <button class="deck-pill-btn" id="deck-recents" title="Uygulamalar"><i data-lucide="layers"></i> Çoklu Görev</button>
+                    <button class="deck-pill-btn" id="deck-notifications" title="Bildirimleri Aç"><i data-lucide="bell"></i> Bildirimler</button>
+                    <button class="deck-pill-btn" id="deck-screenshot" title="Ekran Görüntüsü Al"><i data-lucide="camera"></i> Ekran Al</button>
+                    <button class="deck-pill-btn" id="deck-vol-up" title="Ses Artır"><i data-lucide="volume-2"></i> Ses +</button>
+                    <button class="deck-pill-btn" id="deck-vol-down" title="Ses Kıs"><i data-lucide="volume-1"></i> Ses -</button>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- 3. KATMAN: TELEFONDAN DOSYA & FOTOĞRAF ALMA MERKEZİ -->
+        <section class="glass-panel" style="margin-top: 4px;">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <i data-lucide="download-cloud"></i>
+                    <span>Telefondan Dosya & Fotoğraf Çek (Phone ➔ PC)</span>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <div class="target-folder-picker">
+                        <span>Klasör:</span>
+                        <select id="phone-source-folder">
+                            <option value="/sdcard/Download">İndirilenler (/Download)</option>
+                            <option value="/sdcard/DCIM/Camera">Kamera Fotoğrafları (/DCIM)</option>
+                            <option value="/sdcard/Pictures/Screenshots">Ekran Görüntüleri</option>
+                            <option value="/sdcard/Music">Müzikler (/Music)</option>
+                        </select>
+                    </div>
+                    <button class="btn-primary" id="btn-quick-photo" style="padding: 6px 14px; font-size: 0.8rem;">
+                        <i data-lucide="image"></i>
+                        <span>Son Fotoğrafı Çek</span>
+                    </button>
+                    <button class="btn-secondary" id="btn-refresh-phone-files" style="padding: 6px 12px; font-size: 0.8rem;">
+                        <i data-lucide="refresh-cw"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- DOSYA LİSTESİ -->
+            <div id="phone-file-list" class="phone-file-grid">
+                <div class="file-empty-state">
+                    <i data-lucide="folder" style="width: 32px; height: 32px; color: var(--text-muted);"></i>
+                    <p>Telefondaki dosyaları listelemek için yukarıdan klasör seçin veya yenileyin.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- BİLDİRİM TOAST ALANI -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- JAVASCRIPT BAĞLANTILARI -->
+    <script src="js/qrcode.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/dropzone.js"></script>
+    <script src="js/deck.js"></script>
+
+    <script>
+        // Lucide simgelerini başlat
+        if (window.lucide) {
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
